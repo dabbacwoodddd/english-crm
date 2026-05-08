@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Okurmen Kids — CRM</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">OK</div>
+    <div class="logo-text">
+      <span class="logo-title">Okurmen</span>
+      <span class="logo-sub">Kids Academy</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+      <span class="nav-icon">⊞</span>
+      <span>Дашборд</span>
+    </a>
+    <a class="nav-item" data-page="students" onclick="navigate('students')">
+      <span class="nav-icon">◎</span>
+      <span>Ученики</span>
+    </a>
+    <a class="nav-item" data-page="grades" onclick="navigate('grades')">
+      <span class="nav-icon">◈</span>
+      <span>Оценки</span>
+    </a>
+    <a class="nav-item" data-page="attendance" onclick="navigate('attendance')">
+      <span class="nav-icon">◉</span>
+      <span>Посещаемость</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="academy-badge">
+      <span>🚀</span>
+      <span>IT Academy</span>
+    </div>
+  </div>
+</aside>
+
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+
+<main class="main">
+
+ 
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="burger" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </button>
+      <h1 class="page-title" id="pageTitle">Дашборд</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="topbarDate"></div>
+    </div>
+  </header>
+  <section class="page active" id="page-dashboard">
+
+  
+    <div class="stat-grid">
+      <div class="stat-card accent-blue">
+        <div class="stat-icon">◎</div>
+        <div class="stat-body">
+          <div class="stat-value" id="stat-students">0</div>
+          <div class="stat-label">Учеников</div>
+        </div>
+        <div class="stat-trend" id="trend-students"></div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-icon">◈</div>
+        <div class="stat-body">
+          <div class="stat-value" id="stat-avg">—</div>
+          <div class="stat-label">Средний балл</div>
+        </div>
+      </div>
+      <div class="stat-card accent-orange">
+        <div class="stat-icon">◉</div>
+        <div class="stat-body">
+          <div class="stat-value" id="stat-attend">—</div>
+          <div class="stat-label">Посещаемость</div>
+        </div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-icon">⊞</div>
+        <div class="stat-body">
+          <div class="stat-value" id="stat-groups">0</div>
+          <div class="stat-label">Групп</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2 class="section-title">Последние активности</h2>
+    </div>
+    <div class="activity-list" id="activityList">
+      <div class="empty-state">Нет активностей</div>
+    </div>
+
+  </section>
+
+  <section class="page" id="page-students">
+    <div class="section-header">
+      <h2 class="section-title">Ученики</h2>
+      <button class="btn btn-primary" onclick="openModal('addStudent')">+ Добавить</button>
+    </div>
+
+    <div class="toolbar">
+      <input class="search-input" type="text" placeholder="🔍  Поиск по имени..." id="studentSearch" oninput="renderStudents()"/>
+      <select class="filter-select" id="groupFilter" onchange="renderStudents()">
+        <option value="">Все группы</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table class="crm-table" id="studentsTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Имя</th>
+            <th>Возраст</th>
+            <th>Группа</th>
+            <th>Средний балл</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="studentsBody"></tbody>
+      </table>
+      <div class="empty-state hidden" id="studentsEmpty">Ученики не найдены</div>
+    </div>
+  </section>
+
+  <
+  <section class="page" id="page-grades">
+    <div class="section-header">
+      <h2 class="section-title">Оценки</h2>
+      <button class="btn btn-primary" onclick="openModal('addGrade')">+ Добавить оценку</button>
+    </div>
+
+    <div class="toolbar">
+      <select class="filter-select" id="gradeStudentFilter" onchange="renderGrades()">
+        <option value="">Все ученики</option>
+      </select>
+      <select class="filter-select" id="gradeSubjectFilter" onchange="renderGrades()">
+        <option value="">Все предметы</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table class="crm-table">
+        <thead>
+          <tr>
+            <th>Ученик</th>
+            <th>Предмет</th>
+            <th>Балл</th>
+            <th>Дата</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="gradesBody"></tbody>
+      </table>
+      <div class="empty-state hidden" id="gradesEmpty">Оценки не добавлены</div>
+    </div>
+  </section>
+
+
+  <section class="page" id="page-attendance">
+    <div class="section-header">
+      <h2 class="section-title">Посещаемость</h2>
+      <button class="btn btn-primary" onclick="openModal('addAttendance')">+ Отметить</button>
+    </div>
+
+    <div class="toolbar">
+      <select class="filter-select" id="attendStudentFilter" onchange="renderAttendance()">
+        <option value="">Все ученики</option>
+      </select>
+      <input type="date" class="filter-select" id="attendDateFilter" onchange="renderAttendance()"/>
+    </div>
+
+    <div class="table-wrap">
+      <table class="crm-table">
+        <thead>
+          <tr>
+            <th>Ученик</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceBody"></tbody>
+      </table>
+      <div class="empty-state hidden" id="attendanceEmpty">Нет записей о посещаемости</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal()"></div>
+
+
+<div class="modal" id="modal-addStudent">
+  <div class="modal-header">
+    <h3>Добавить ученика</h3>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <label>Полное имя <span class="req">*</span></label>
+    <input type="text" id="sName" placeholder="Айбек Дуйшеев" class="modal-input"/>
+    <label>Возраст <span class="req">*</span></label>
+    <input type="number" id="sAge" placeholder="10" min="5" max="18" class="modal-input"/>
+    <label>Группа <span class="req">*</span></label>
+    <input type="text" id="sGroup" placeholder="Scratch Junior / Python A / Web B" class="modal-input"/>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeModal()">Отмена</button>
+    <button class="btn btn-primary" onclick="saveStudent()">Сохранить</button>
+  </div>
+</div>
+
+
+<div class="modal" id="modal-editStudent">
+  <div class="modal-header">
+    <h3>Редактировать ученика</h3>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <input type="hidden" id="esId"/>
+    <label>Полное имя <span class="req">*</span></label>
+    <input type="text" id="esName" class="modal-input"/>
+    <label>Возраст <span class="req">*</span></label>
+    <input type="number" id="esAge" min="5" max="18" class="modal-input"/>
+    <label>Группа <span class="req">*</span></label>
+    <input type="text" id="esGroup" class="modal-input"/>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeModal()">Отмена</button>
+    <button class="btn btn-primary" onclick="updateStudent()">Обновить</button>
+  </div>
+</div>
+
+
+<div class="modal" id="modal-addGrade">
+  <div class="modal-header">
+    <h3>Добавить оценку</h3>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <label>Ученик <span class="req">*</span></label>
+    <select id="gStudent" class="modal-input"></select>
+    <label>Предмет <span class="req">*</span></label>
+    <select id="gSubject" class="modal-input">
+      <option value="">Выберите предмет</option>
+      <option>Scratch</option>
+      <option>Python</option>
+      <option>Web (HTML/CSS)</option>
+      <option>JavaScript</option>
+      <option>Робототехника</option>
+      <option>Алгоритмы</option>
+    </select>
+    <label>Балл (1–100) <span class="req">*</span></label>
+    <input type="number" id="gScore" min="1" max="100" placeholder="85" class="modal-input"/>
+    <label>Дата <span class="req">*</span></label>
+    <input type="date" id="gDate" class="modal-input"/>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeModal()">Отмена</button>
+    <button class="btn btn-primary" onclick="saveGrade()">Сохранить</button>
+  </div>
+</div>
+
+<div class="modal" id="modal-addAttendance">
+  <div class="modal-header">
+    <h3>Отметить посещаемость</h3>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <label>Ученик <span class="req">*</span></label>
+    <select id="aStudent" class="modal-input"></select>
+    <label>Дата <span class="req">*</span></label>
+    <input type="date" id="aDate" class="modal-input"/>
+    <label>Статус <span class="req">*</span></label>
+    <div class="status-toggle">
+      <label class="toggle-opt">
+        <input type="radio" name="aStatus" value="present" checked/>
+        <span class="toggle-btn present">✓ Присутствовал</span>
+      </label>
+      <label class="toggle-opt">
+        <input type="radio" name="aStatus" value="absent"/>
+        <span class="toggle-btn absent">✗ Отсутствовал</span>
+      </label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeModal()">Отмена</button>
+    <button class="btn btn-primary" onclick="saveAttendance()">Сохранить</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
